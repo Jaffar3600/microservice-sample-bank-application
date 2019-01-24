@@ -20,12 +20,25 @@ public class TransactionController {
 	@Autowired
 	RestTemplate temp;
 
-	@PostMapping
+	@PostMapping("/deposit")
 	public ResponseEntity<Transaction> deposit(@RequestBody Transaction transaction) {
 		ResponseEntity<Double> entity = temp.getForEntity(
 				"http://localhost:9090/accounts/" + transaction.getAccountNumber() + "/balance", Double.class);
 		Double currentBalance = entity.getBody();
 		Double updateBalance = service.deposit(transaction.getAccountNumber(), transaction.getAmount(), currentBalance,
+				transaction.getTransactionDetails());
+		temp.put(
+				"http://localhost:9090/accounts/" + transaction.getAccountNumber() + "?currentBalance=" + updateBalance,
+				null);
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+
+	@PostMapping("/withdraw")
+	public ResponseEntity<Transaction> withdraw(@RequestBody Transaction transaction) {
+		ResponseEntity<Double> entity = temp.getForEntity(
+				"http://localhost:9090/accounts/" + transaction.getAccountNumber() + "/balance", Double.class);
+		Double currentBalance = entity.getBody();
+		Double updateBalance = service.withdraw(transaction.getAccountNumber(), transaction.getAmount(), currentBalance,
 				transaction.getTransactionDetails());
 		temp.put(
 				"http://localhost:9090/accounts/" + transaction.getAccountNumber() + "?currentBalance=" + updateBalance,

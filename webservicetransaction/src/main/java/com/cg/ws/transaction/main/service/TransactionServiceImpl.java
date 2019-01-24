@@ -19,7 +19,9 @@ public class TransactionServiceImpl implements TransactionService{
 		 
 		 Transaction transaction =new Transaction();
 		 transaction.setAccountNumber(accountNumber);
+		 transaction.setAmount(amount);
 		 currentBalance = currentBalance+amount;
+		 System.out.println(currentBalance);
 		 transaction.setCurrentBalance(currentBalance);
 		 transaction.setTransactionDetails(transactionDetails);
 		 transaction.setTransactionType(TransactionType.DEPOSIT);
@@ -27,4 +29,33 @@ public class TransactionServiceImpl implements TransactionService{
 		 repo.save(transaction);
 		 return currentBalance;
 	 }
+
+
+	@Override
+	public Double withdraw(int accountNumber, double amount, double currentBalance, String transactionDetails) {
+		Transaction transaction = new Transaction();
+		transaction.setAccountNumber(accountNumber);
+		 transaction.setAmount(amount);
+		currentBalance = currentBalance-amount;
+		transaction.setCurrentBalance(currentBalance);
+		transaction.setTransactionDetails(transactionDetails);
+		transaction.setTransactionType(TransactionType.WITHDRAW);
+		transaction.setTransactionDate(LocalDateTime.now());
+		repo.save(transaction);
+		return currentBalance;
+	}
+	 
+	 
+	/*
+	 * public double withdraw(int accountNumber, double amount, double
+	 * currentBalance, String transactionDetails) {
+	 * 
+	 * Transaction transaction =new Transaction();
+	 * transaction.setAccountNumber(accountNumber); currentBalance =
+	 * currentBalance-amount; transaction.setCurrentBalance(currentBalance);
+	 * transaction.setTransactionDetails(transactionDetails);
+	 * transaction.setTransactionType(TransactionType.WITHDRAW);
+	 * transaction.setTransactionDate(LocalDateTime.now()); repo.save(transaction);
+	 * return currentBalance; }
+	 */
 }
