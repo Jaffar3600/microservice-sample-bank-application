@@ -1,8 +1,11 @@
 package com.cg.ws.transaction.main.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,9 +44,16 @@ public class TransactionController {
 		Double updateBalance = service.withdraw(transaction.getAccountNumber(), transaction.getAmount(), currentBalance,
 				transaction.getTransactionDetails());
 		temp.put(
-				"http://localhost:9090/accounts/" + transaction.getAccountNumber() + "?currentBalance=" + updateBalance,
-				null);
+				"http://localhost:9090/accounts/" + transaction.getAccountNumber() + "?currentBalance=" + updateBalance, null);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-
+	
+	
+	@GetMapping("/getstatements")
+	public CurrentDataSet getStatement() {
+		List<Transaction> transactions = service.getStatement();
+		CurrentDataSet dataset = new CurrentDataSet();
+		dataset.setTransactions(transactions);
+		return dataset;
+	}
 }

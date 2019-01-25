@@ -12,6 +12,8 @@
 			<a href="/DepositForm">Deposit</a><br><br>
 			 <a href="/WithdrawForm">Withdraw</a><br><br>
 			<a href="/FundTransfer">FundTransfer</a><br><br>
+			<a href="getStatements?offset=1&size=5">Get Statement</a>
+			
 	
 		</form>
 </body>
